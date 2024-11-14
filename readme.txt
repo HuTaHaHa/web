@@ -1,0 +1,16 @@
+- Frontend:
+	-Trang Chủ
+	-Trang danh sách sản phẩm
+	-Trang giỏ hàng
+	-Trang thanh toán hoàn thành
+-Admin:
+	-Tài khoản người dùng:
+		-Quản lý role (admin, user)
+		-Quản lý người dùng: admin/user
+			Hiển thị danh sach/thêm/sửa/xoá
+		-Đăng ký tài khoản
+		-Đăng nhập
+	-Quản lý danh muc sản phẩm
+	-Quản lý sản phẩm
+	-Quản lý đơn hàng
+	-Quản lý phản hồi

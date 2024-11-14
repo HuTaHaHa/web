@@ -1,0 +1,148 @@
+body{
+	background: #212121;
+	font-family: Arial, Helvetica, sans-serif;
+}
+a{
+	text-decoration: none;
+	color: white;
+}
+/*TOP*/
+.top{
+	background: #A13333;
+	height: 100px;
+}
+h1{
+  font-family: "Modak", system-ui;
+  font-weight: 100;
+  font-style: normal;
+  color: white;
+}
+form {
+	display: flex;
+	background: white;
+	height: 38px;
+	align-items: center;
+}
+.nhap{
+	width: 300px;
+	height: 35px;
+	border: none;
+	padding: 1.5px;
+}
+.tool form{
+	border: solid white 1px;
+	border-left: none;
+}
+.tim{
+	background: #A13333;
+	height: 30px;
+	width: 50px;
+	margin: 5px;
+	border: none;
+	border-radius: 2px;
+	color: white;
+}
+/*MID*/
+.mid {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 auto;
+    width: 1100px;
+}
+.login{
+	text-align: right;
+}
+.tool{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+.danhmuc{
+	display: flex;
+	align-items: center;
+	background: #3f3f3f;
+	height: 50px;
+}
+.danhmuc h3{
+	margin: 0 auto;
+    width: 1100px;
+    color: white;
+}
+
+
+
+/*BOT*/
+.bot{
+	color: #ffffff;
+	display: flex;
+	justify-content: space-evenly;
+	background: #3f3f3f;
+}
+.cot{
+	width: 400px;
+}
+.cot a {
+	padding: 5px;
+}
+
+/* Danh Muc */
+nav ul {
+	list-style: none;
+	padding: 0;
+}
+nav li {
+	position: relative;
+}
+#danhmuc{
+	border: solid white 1px;
+	border-right: none;
+	color: #212121;	
+}
+nav a {
+	display: block;
+	padding: 10px 20px;
+	text-decoration: none;
+	width: 100px;
+	text-align: center;
+	background: #c1c1c1;
+
+}
+.sub-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #f9f9f9;
+	box-shadow: 2px 2px 5px rgba(0,0,0,.3);
+}
+nav li:hover .sub-menu {
+	display: block;
+}
+
+/*Gio hang*/
+#giohang , #user{
+	color: white;
+	padding: 5px;
+}
+
+/*San Pham*/
+.product{ 
+	margin: 4px;
+	background: #e7e7e7;
+	border: solid #cfcfcf 1px;
+	width: 200px;
+}
+.product p {
+	margin: 8px;
+}
+.product img{
+	width: 200px;
+	height: 200px;
+	border-bottom: solid #cfcfcf 1px;
+}
+.mota{
+	padding: 5px;	
+}
+.product:hover {
+	box-shadow: 0px 0px 5px 1px white;
+}
