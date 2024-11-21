@@ -33,21 +33,22 @@
 	$username = $_POST["username"];
 	$password = $_POST["password"];
 	if (empty($_POST['ten']) || empty($_POST['diachi']) || empty($_POST['username']) || empty($_POST['password'])|| empty($_POST['sdt'])) {
-		echo "Vui lòng nhập đầy đủ thông tin.";
+		echo "<script>alert('Vui lòng nhập đầy đủ thông tin.')</script>";
   		return false;
 	}
 	// Kiểm tra xem tên đăng nhập đã tồn tại chưa
 	$sql = "SELECT * FROM user WHERE taikhoan = '$username'";
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0) {
-		echo "<p>Tên đăng nhập đã tồn tại.</p>";
+		echo "<script>alert('Tên đăng nhập đã tồn tại.')</script>";
 	} else {
 		// Thêm thông tin người dùng mới vào database
 		$sql = "INSERT INTO user (taikhoan, matkhau, ten, diachi , sdt) VALUES ('{$_POST['username']}', '{$_POST['password']}' ,'{$_POST['ten']}','{$_POST['diachi']}','{$_POST['sdt']}')";
 		$conn->query($sql);
-		echo '<p>Đăng ký thành công chuyển đến trang Đăng Nhập sau 5s </p>';
+		echo '<script>alert("Đăng ký thành công chuyển đến trang Đăng Nhập sau 5s")</script>';
 		header("refresh: 5; url=dangnhap.php");
 	}
 	// Đóng kết nối database
 	$conn->close();
 ?>
+<script>alert("")</script>

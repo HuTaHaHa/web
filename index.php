@@ -13,6 +13,7 @@
 </head>
 	<?php
 		session_start();
+		$tk = $_SESSION['username'] ?? '';
 		$b = "";
 		if(!$_GET == false){
 			$b = $_GET['danhmuc'];
@@ -53,7 +54,7 @@
 								$sql = "SELECT * FROM danhmuc";
 								$danhmuc = $conn->query($sql);
 								foreach ($danhmuc as $key) { ?>
-								<li><a href="?danhmuc=<?php echo $key["danhmuc"]; ?>"><?php echo $key["danhmuc"]; ?></a></li>
+								<li id="sub"><a href="?danhmuc=<?php echo $key["danhmuc"]; ?>"><?php echo $key["danhmuc"]; ?></a></li>
 								<?php } ?>
 							</ul>
 						</li>
@@ -65,7 +66,15 @@
 				</form>
 			</div>
 			<div>
-				<a href="giohang.php" id="giohang"><i class="fa-solid fa-cart-shopping fa-xl" style="color: white;"></i></a>
+				<a href="giohang.php" id="giohang">
+					<i class="fa-solid fa-cart-shopping fa-xl" style="color: white;"></i>
+					<sup style="position: fixed;transform: translateY(-10px);">
+						<?php if ($tk!="") {
+						$sql = "SELECT SUM(soluong) AS slgh FROM giohang WHERE taikhoan = '$tk'";
+						$giohang =  $conn->query($sql) ?? array(3);
+						//print_r($giohang);
+						echo $giohang->fetch_assoc()["slgh"];}?></sup>
+				</a>
 				<?php 
 					if (!$_SESSION == false) {
 						echo '<a href="dangxuat.php"><i class="fa-solid fa-right-from-bracket fa-xl" style="color: #ffffff;"></i></a>';

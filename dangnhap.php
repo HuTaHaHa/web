@@ -38,7 +38,7 @@
 		$_SESSION["username"] = $row["taikhoan"];
 		header("Location: index.php");
 	} else {
-		echo "<p>Tên đăng nhập hoặc mật khẩu không chính xác.</p>";
+		echo "<script>alert('Tên đăng nhập hoặc mật khẩu không chính xác.')</script>";
 	}
 	// Đóng kết nối database
 	$conn->close();
