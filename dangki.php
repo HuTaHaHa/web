@@ -16,6 +16,7 @@
 			<input type="number" name="sdt" min="100000000" placeholder="Số điện thoại"><br>
 			<input type="text" name="username" placeholder="Tên đăng nhập"><br>
 			<input type="password" name="password" placeholder="Mật khẩu"><br>
+			<input type="password" name="checkpassword" placeholder="Xác nhận mật khẩu"><br>
 			<button type="submit" class="submit">Đăng ký</button>
 			<p class="signup-link">Đã có tài khoản vui lòng <a href="dangnhap.php">Đăng nhập</a></p>
 		</form>
@@ -35,6 +36,10 @@
 	if (empty($_POST['ten']) || empty($_POST['diachi']) || empty($_POST['username']) || empty($_POST['password'])|| empty($_POST['sdt'])) {
 		echo "<script>alert('Vui lòng nhập đầy đủ thông tin.')</script>";
   		return false;
+	}
+	if($_POST['password']!=$_POST['checkpassword']){
+		echo "<script>alert('Mật khẩu không trùng khớp')</script>";
+		return false;
 	}
 	// Kiểm tra xem tên đăng nhập đã tồn tại chưa
 	$sql = "SELECT * FROM user WHERE taikhoan = '$username'";

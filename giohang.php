@@ -58,6 +58,10 @@
 			header("Location: dangnhap.php");                     
 		}
 		$tk = $_SESSION["username"];
+		$tb = $_GET['tb'] ?? 3;
+		if($tb==2){
+			echo "<script>alert('Dat hang thanh cong')</script>;";
+		}
 		// Tạo kết nối
 		$conn = new mysqli("localhost", "root", "", "shoptoy");
 		$sql = "SELECT sanpham.masp, sanpham.tensp, sanpham.dongia, giohang.soluong FROM sanpham JOIN giohang ON sanpham.masp = giohang.masp AND giohang.taikhoan = '$tk';";

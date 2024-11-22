@@ -20,6 +20,6 @@
 		$del = "DELETE FROM giohang WHERE `giohang`.`taikhoan` = '$tk' AND `giohang`.`masp` = '$xoa'";
 		mysqli_query($conn, $del);
 	}
-	header("Location: giohang.php");
+	header("Location: giohang.php?tb=2");
  ?>
  

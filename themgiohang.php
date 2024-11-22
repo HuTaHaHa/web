@@ -1,5 +1,8 @@
 <?php 
 	session_start();
+	if (!$_SESSION) {
+		header("Location: dangnhap.php");                     
+	}
 	$tk = $_SESSION['username'] ?? '';
 	if(!$_POST) { exit();}
 	$sl = $_POST["soluong"]??0;
