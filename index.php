@@ -68,11 +68,10 @@
 			<div>
 				<a href="giohang.php" id="giohang">
 					<i class="fa-solid fa-cart-shopping fa-xl" style="color: white;"></i>
-					<sup style="position: fixed;transform: translateY(-10px);">
+					<sup >
 						<?php if ($tk!="") {
 						$sql = "SELECT SUM(soluong) AS slgh FROM giohang WHERE taikhoan = '$tk'";
-						$giohang =  $conn->query($sql) ?? array(3);
-						//print_r($giohang);
+						$giohang =  $conn->query($sql) ?? 0;
 						echo $giohang->fetch_assoc()["slgh"];}?></sup>
 				</a>
 				<?php 
@@ -87,7 +86,7 @@
 	</div>
 	<div class="danhmuc"><h3><?php echo $b; ?></h3></div>
 	<div class="mid">		
-		<?php foreach ($data as $product): ?>
+		<?php foreach ($data as $product): if($product['soluong']>0){?>
 			<div class="product" onclick="sanpham(<?php echo $product['masp'] ?>)">
 				<img src="<?php echo $product['hinhanh']; ?>" alt="<?php echo $product['tensp']; ?>">
 				<div class="mota">
@@ -95,7 +94,7 @@
 					<p style="color: red;"><?php echo number_format($product['dongia'], 0, ',', '.'); ?> ₫</p>
 				</div>
 			</div>
-		<?php endforeach;?>
+		<?php };endforeach;?>
 	</div>
 	<div class="bot">
 		<div class="cot">
@@ -104,10 +103,10 @@
 		</div>
 		<div class="cot">
 			<h3>Liên hệ</h3>
-				<dl><i class="fa-solid fa-location-dot"></i> Số 456 Minh Khai, P.Vĩnh Tuy, Q.Hai Bà Trưng, TP.Hà Nội</dl>
-				<dl><i class="fa-solid fa-location-dot"></i> Số 218 Đường Lĩnh Nam, Q.Hoàng Mai, TP.Hà Nội</dl>
+				<dl><i class="fa-solid fa-location-dot"></i><a 	href="https://maps.app.goo.gl/bnjZfmYcfeQL7AeAA" target="_blank" class="location-button">Số 456 Minh Khai, P.Vĩnh Tuy, Q.Hai Bà Trưng, TP.Hà Nội</a></dl>
+				<dl><i class="fa-solid fa-location-dot"></i><a 	href="https://maps.app.goo.gl/FuhYpKcFu63Qqrs68" target="_blank" class="location-button"> Số 218 Đường Lĩnh Nam, Q.Hoàng Mai, TP.Hà Nội</a></dl>
 				<dl><i class="fa-solid fa-phone"></i> 0369337783</dl>
-				<dl><i class="fa-solid fa-envelope"></i> hungluuq@gmail.com</dl>
+				<dl><i class="fa-solid fa-envelope"></i><a href="https://mail.google.com/mail/?view=cm&fs=1&to=hungluuq@gmail.com" target="_blank" class="mail-button">hungluuq@gmail.com</a></dl>
 		</div>
 		<div class="cot">
 			<h3>Mạng xã hội</h3>

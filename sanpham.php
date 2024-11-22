@@ -104,10 +104,10 @@
 			<div>
 				<a href="giohang.php" id="giohang">
 					<i class="fa-solid fa-cart-shopping fa-xl" style="color: white;"></i>
-					<sup >
+					<sup>
 						<?php if ($tk!="") {
-						$sql = "SELECT SUM(soluong) AS slgh FROM giohang WHERE taikhoan = $tk";
-						$giohang = $conn->query($sql);
+						$sql = "SELECT SUM(soluong) AS slgh FROM giohang WHERE taikhoan = '$tk'";
+						$giohang =  $conn->query($sql) ?? 0;
 						echo $giohang->fetch_assoc()["slgh"];}?></sup>
 				</a>
 				<?php 
@@ -132,20 +132,19 @@
 							<label style="">Danh Mục</label>
 							<a href="" style="color: white;padding: 20px;"><?php echo $key['danhmuc']; ?></a>
 						</p>
-						
-						
+												
 						<div class="buy" style="padding: 20px 0;">	
-							<form method="post">
+							<form action="themgiohang.php" method="post">
 								<div class="soluong">
 									<label style="padding-right: 30px;">Số Lượng</label>
 									<i class="fa-solid fa-minus" onclick="tru()"></i>
+									<input type="hidden" name="sp" value="<?php echo $key['masp']; ?>">
 									<input name="soluong" type="number" value="1" min="1" max="<?php echo $key['soluong']; ?>" id="soluong">
 									<i class="fa-solid fa-plus" onclick="cong()"></i>
 								</div>
 								<p style="color: white;"><i id="kho"><?php echo $key['soluong']; ?> sản phẩm có sẵn</i></p>
 								<p><i style="color: red;text-shadow: 0px 0px 3px #ffffff;"><?php echo number_format($key['dongia'], 0, ',', '.'); ?> ₫</i></p>
-								<button type="submit" name="mua" value="1" style="background: #a13333;">Mua ngay</button>
-								<button type="submit" name="them" value="<?php echo $key['soluong']; ?>" style="background: none;">Thêm vào giỏ</button>
+								<button type="submit" name="them" value="<?php echo $key['soluong']; ?>" style="background: #a13333;">Thêm vào giỏ</button>
 							</form>
 						</div>
 					</div>
@@ -163,10 +162,10 @@
 		</div>
 		<div class="cot">
 			<h3>Liên hệ</h3>
-				<dl><i class="fa-solid fa-location-dot"></i> Số 456 Minh Khai, P.Vĩnh Tuy, Q.Hai Bà Trưng, TP.Hà Nội</dl>
-				<dl><i class="fa-solid fa-location-dot"></i> Số 218 Đường Lĩnh Nam, Q.Hoàng Mai, TP.Hà Nội</dl>
+				<dl><i class="fa-solid fa-location-dot"></i><a 	href="https://maps.app.goo.gl/bnjZfmYcfeQL7AeAA" target="_blank" class="location-button">Số 456 Minh Khai, P.Vĩnh Tuy, Q.Hai Bà Trưng, TP.Hà Nội</a></dl>
+				<dl><i class="fa-solid fa-location-dot"></i><a 	href="https://maps.app.goo.gl/FuhYpKcFu63Qqrs68" target="_blank" class="location-button"> Số 218 Đường Lĩnh Nam, Q.Hoàng Mai, TP.Hà Nội</a></dl>
 				<dl><i class="fa-solid fa-phone"></i> 0369337783</dl>
-				<dl><i class="fa-solid fa-envelope"></i> hungluuq@gmail.com</dl>
+				<dl><i class="fa-solid fa-envelope"></i><a href="https://mail.google.com/mail/?view=cm&fs=1&to=hungluuq@gmail.com" target="_blank" class="mail-button">hungluuq@gmail.com</a></dl>
 		</div>
 		<div class="cot">
 			<h3>Mạng xã hội</h3>
@@ -179,22 +178,7 @@
 </body>
 <script type="text/javascript">
 	const soluong = document.getElementById('soluong');
-	function cong() {soluong.value = parseInt(soluong.value) + 1;}
+	function cong() {soluong.value = Math.min(<?php echo $key['soluong']; ?>, parseInt(soluong.value) + 1);}
 	function tru() {soluong.value = Math.max(1, parseInt(soluong.value) - 1);}
 </script>
 </html>
-<?php 
-	if(!$_POST) { exit();}
-	$sl = $_POST["soluong"];
-	$them = $_POST["them"] ?? 0;
-	if($them != 0){
-		$ktsql = "SELECT * FROM giohang WHERE masp=$masp";
-		if(mysqli_query($conn, $ktsql)->num_rows > 0){
-			$sql = "UPDATE `giohang` SET `soluong` = `soluong` + $sl WHERE `giohang`.`taikhoan` = $tk AND giohang.masp = $masp";
-			mysqli_query($conn, $sql);
-		}else{
-			$sql = "INSERT INTO `giohang` (`id`, `taikhoan`, `masp`, `soluong`) VALUES (NULL, $tk, $masp, $sl);";
-			mysqli_query($conn, $sql);
-		}
-	}
- ?>

@@ -3,67 +3,42 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Giỏ Hàng</title>
+	<title>Trang Chu</title>
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
-	<style type="text/css">
-		.mid{
-			width: 1100px;
-			background: #3f3f3f;
-			display: flex;
-			flex-direction: column;
-			min-height: 50vh;
-		}
-		table , tr{
-			border-top:2px solid black;
-			border-collapse: collapse;
-			color: white;
-		}
-		tr{
-			text-align: left;
-		}
-		td,th{
-			padding: 30px;
-		}
-		th button{
-			padding: 10px 50px;
-			margin: 10px;
-			border: solid #a13333 1px;
-			color: white;
-		}
-		/*So Luong*/
-		.soluong{
-			display: flex;
-		}
-		input[type=number] ,.soluong i{
-			text-align: center;
-			border: none;
-			width: 20px;
-			background: gray;
-		}
-		input::-webkit-inner-spin-button {
-		  -webkit-appearance: none;
-		  margin: 0;
-		}
-	</style>
 </head>
-<body>
 	<?php
 		session_start();
-		if (!$_SESSION) {
-			header("Location: dangnhap.php");                     
+		$tk = $_SESSION['username'] ?? '';
+		$b = "";
+		if(!$_GET == false){
+			$b = $_GET['danhmuc'];
 		}
-		$tk = $_SESSION["username"];
+		if($b == ""){
+			$sql = "SELECT * FROM sanpham";
+		}else{
+			$sql = "SELECT * FROM sanpham WHERE danhmuc = '$b'";
+		}
+		if(!$_POST == false) {
+			$tukhoa = $_POST['tukhoa'];
+			$sql = "SELECT * FROM sanpham WHERE tensp LIKE '%$tukhoa%'";
+		}
 		// Tạo kết nối
 		$conn = new mysqli("localhost", "root", "", "shoptoy");
-		$sql = "SELECT sanpham.masp, sanpham.tensp, sanpham.dongia, giohang.soluong FROM sanpham JOIN giohang ON sanpham.masp = giohang.masp AND giohang.taikhoan = '$tk';";
+
+		// Lấy danh sách sản phẩm có giá trên 100.000
 		$ketqua = $conn->query($sql);
-		$data = $ketqua->fetch_all(MYSQLI_ASSOC);
+		// Tạo mảng sản phẩm 
+		$data = [];
+		while ($row = $ketqua->fetch_assoc()) {
+			$data[] = $row;
+		}	
 	?>
+<body>
 	<div class="top">
 		<div class="login">
 					
@@ -79,7 +54,7 @@
 								$sql = "SELECT * FROM danhmuc";
 								$danhmuc = $conn->query($sql);
 								foreach ($danhmuc as $key) { ?>
-								<li id="sub"><a href="index.php?danhmuc=<?php echo $key["danhmuc"]; ?>"><?php echo $key["danhmuc"]; ?></a></li>
+								<li id="sub"><a href="?danhmuc=<?php echo $key["danhmuc"]; ?>"><?php echo $key["danhmuc"]; ?></a></li>
 								<?php } ?>
 							</ul>
 						</li>
@@ -109,47 +84,17 @@
 			</div>		
 		</div>
 	</div>
-	<div class="mid">
-		<div class="bang">	
-			<form action="muahang.php" method="post">
-				<table style="width:100%">
-					<tr>
-						<th></th>
-						<th>Sản Phẩm</th>
-						<th>Đơn Giá</th>
-						<th>Số Lượng</th>
-						<th>Số Tiền</th>
-						<th>Thao Tác</th>
-					</tr>
-					<?php $i = 0 ;foreach ($ketqua as $key) { ?>
-					<tr>
-						<td><input type="checkbox" name="sp[]" value="<?php echo $i.",".$key['masp']; ?>"></td>	
-						<td style="width: 300px;height: 50px"><?php echo $key['tensp']; ?></td>
-						<td><?php echo number_format($key['dongia'], 0, ',', '.'); ?></td>
-						<td>
-							<?php 
-								$masp = $key['masp'];
-								$sql = "SELECT soluong FROM sanpham WHERE masp = '$masp'";
-								$ketqua = mysqli_query($conn, $sql)->fetch_all();
-							 ?>
-							<i class="fa-solid fa-minus" onclick="tru(<?php echo $key['masp']; ?>)"></i>
-							<input name="soluong[]" type="number" value="<?php echo $key['soluong']; ?>" min="1" max="<?php echo mysqli_query($conn, $sql)->fetch_all()[0][0]; ?>" id="<?php echo $key['masp']; ?>">
-							<i class="fa-solid fa-plus" onclick="cong(<?php echo $key['masp']; ?>,<?php echo mysqli_query($conn, $sql)->fetch_all()[0][0]; ?>)"></i>
-						</td>
-						<td><?php echo number_format($key['dongia']*$key['soluong'], 0, ',', '.'); ?></td>
-						<td><button type="submit" name="xoa" value="<?php echo $key['masp']; ?>" style="background: none;border: none;"><i class="fa-solid fa-trash fa-xl" ></i></button></td>
-					</tr>
-					<?php $i++; } ?>
-					<tr>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th colspan="2" style="text-align:center;"><button type="submit" value="1" style="background: #a13333;">Mua Hàng</button></th>
-					</tr>
-				</table>		
-			</form>
-		</div>
+	<div class="danhmuc"><h3><?php echo $b; ?></h3></div>
+	<div class="mid">		
+		<?php foreach ($data as $product): if($product['soluong']>0){?>
+			<div class="product" onclick="sanpham(<?php echo $product['masp'] ?>)">
+				<img src="<?php echo $product['hinhanh']; ?>" alt="<?php echo $product['tensp']; ?>">
+				<div class="mota">
+					<p style="font-style: italic;"><?php echo $product['tensp']; ?></p>
+					<p style="color: red;"><?php echo number_format($product['dongia'], 0, ',', '.'); ?> ₫</p>
+				</div>
+			</div>
+		<?php };endforeach;?>
 	</div>
 	<div class="bot">
 		<div class="cot">
@@ -173,8 +118,8 @@
 	</div>
 </body>
 <script type="text/javascript">
-	function getid(a) {	return document.getElementById(a);	}
-	function cong(a,max) {getid(a).value = Math.min(max, parseInt(getid(a).value) + 1);}
-	function tru(a) {getid(a).value = Math.max(1, parseInt(getid(a).value) - 1);}
+	function sanpham(b){
+		window.location.replace("./sanpham.php?sanpham="+b);
+	}
 </script>
 </html>
